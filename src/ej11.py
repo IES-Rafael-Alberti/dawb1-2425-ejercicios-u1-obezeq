@@ -3,7 +3,7 @@
 try:
     n = int(input("Introduce un número entero positivo: "))
 
-    if n > 0:
+    if n >= 0:
         suma = (n*(n+1))/2
         print(f"La suma ({n}*({n}+1))/2 = {suma}")
     else:
