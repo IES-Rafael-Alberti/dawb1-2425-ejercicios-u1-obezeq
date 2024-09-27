@@ -9,3 +9,4 @@ try:
     print(f"Importe total: {importe(hours,cost)}")
 except ValueError:
     print("No has introducido numero!")
+    
