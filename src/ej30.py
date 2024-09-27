@@ -26,73 +26,21 @@ while total < 1:
 list = []
 n = numero
 
+while n <= total:
+    list.append(n)
+    n = n + incremento
 
-if numero <= incremento:
+counter = 0
+end = len(list)
 
-    ultimo = total - incremento + numero
-    penultimo = ultimo - incremento
-
-else:
-
-    if (total - incremento - incremento + numero) == total:
-        ultimo = total
-        penultimo = ultimo - incremento
+print(f"SERIE => ", end="")
+for i in list:
+    counter += 1
+    if counter == 1:
+        print(f"{i}", end="-")
+    elif counter == (len(list) - 1):
+        print(f"{i}", end="-")
+    elif counter == len(list):
+        print(f"{i}", end="")
     else:
-        diferencia = (numero - incremento)
-        diferencia = numero + diferencia - incremento
-        ultimo = total - diferencia
-        penultimo = ultimo - incremento
-
-        # ultimo = total - incremento
-        # penultimo = ultimo - incremento
-
-        # penultimo = 87
-        # ultimo = 94
-
-print(ultimo)
-print(penultimo)
-
-
-print("SERIE => ", end="")
-while n <= total:
-
-    if n == numero:
-        print(f"{n}", end="-")
-
-    elif n == penultimo:
-        print(f"{n}", end="-")
-
-    elif n == ultimo:
-        print(f"{n}", end="")
-
-    elif n >= (n+incremento) or n <= (penultimo - incremento):
-        print(f"{n}", end="..")
-
-    n = n + incremento
-
-
-
-"""
-if (incremento - numero) == 0:
-    limit = 1
-else:
-    limit = (incremento + numero +1)
-    print(limit)
-
-print("SERIE => ", end="")
-while n <= total:
-    # list.append(n)
-
-    # error with 5-10-100
-
-    if n == numero:
-        print(f"{n}-", end="")
-    elif n == (total-limit):
-        print(f"{n}-{n+incremento}", end="")
-    elif n < (total - incremento):
-        print(f"{n}", end="..")
-    elif n == (total-incremento):
-        print(f"{n}-{n+incremento}", end="")
-
-    n = n + incremento
-"""
+        print(f"{i}", end="..")
