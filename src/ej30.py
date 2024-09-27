@@ -26,6 +26,7 @@ while total < 1:
 list = []
 n = numero
 
+
 if numero <= incremento:
 
     ultimo = total - incremento + numero
