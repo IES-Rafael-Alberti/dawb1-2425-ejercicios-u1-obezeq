@@ -12,3 +12,4 @@ try:
     print(checker(n))
 except ValueError:
     print(f"\nERROR: No has introducido un número!")
+    
