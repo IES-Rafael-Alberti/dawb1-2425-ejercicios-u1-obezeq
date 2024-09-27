@@ -7,6 +7,7 @@ try:
 
     suma = num1 + num2 + num3
 
-    print(f"\nLa suma de {num1}+{num2}+{num3} = {suma}")
+    print(f"\nLa suma de {num1}+{num2}+{num3} = {round(suma, 2)}")
+    
 except ValueError:
     print(f"\nNo has introducido un número!")
