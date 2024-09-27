@@ -19,16 +19,16 @@ try:
     option = int(input("Introduce la opcion: "))
 
     if option == 1:
-        imp_iva_general = round(importe*iva_general, 2)
+        imp_iva_general = round((importe*iva_general), 2)
         print(f"El precio final del articulo es: {imp_iva_general}")
     elif option == 2:
-        imp_iva_reducido = round(importe*iva_reducido, 2)
+        imp_iva_reducido = round((importe*iva_reducido), 2)
         print(f"El precio final del articulo es: {imp_iva_reducido}")    
     elif option == 3:
-        imp_iva_superreducido = round(importe*iva_superreducido, 2)
+        imp_iva_superreducido = round((importe*iva_superreducido), 2)
         print(f"El precio final del articulo es: {imp_iva_superreducido}")    
     elif option == 4:
-        imp_iva_externo = round(importe*iva_externo, 2)
+        imp_iva_externo = round((importe*iva_externo), 2)
         print(f"El precio final del articulo es: {imp_iva_externo}")    
     else:
         print("Opcion no correcta.")
