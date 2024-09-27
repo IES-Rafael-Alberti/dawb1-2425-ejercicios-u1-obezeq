@@ -7,13 +7,3 @@ def conversion():
     celsius = round(celsius, 2)
     
     return celsius
-
-try:
-    
-    celsius = conversion()
-
-    print(f"La temperatura en grados Celsius es {celsius}ºC")
-    
-except ValueError:
-    print("No has introducido una temperatura!")
-    
