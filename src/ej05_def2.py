@@ -13,5 +13,7 @@ def calcula_precio(importe: float, iva: float):
         total = round((importe * iva), 2)
         total = f"{total:.2f}"
         return f"El precio final del artículo con IVA ({porcentaje}) es {total}€."
+    
+    # Mostrar error en caso que el importe sea menor a 0
     else:
         return "El importe debe ser mayor o igual a 0"
