@@ -1,4 +1,3 @@
-.idea
-.UP-2
-.UP1-NEW
-.UP1
+.pytest_cache/
+.vscode
+__pycache__/
