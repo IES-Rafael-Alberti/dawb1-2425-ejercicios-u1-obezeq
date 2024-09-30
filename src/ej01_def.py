@@ -1,4 +1,4 @@
 #!/usr/bin/env python3
 
-def nombre(name):
+def nombre(name: str):
     return name

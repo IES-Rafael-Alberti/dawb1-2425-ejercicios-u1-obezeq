@@ -1,4 +1,4 @@
 #!/usr/bin/env python3
 
-def importe(hours, cost):
+def importe(hours: int, cost: float):
     return hours * cost
