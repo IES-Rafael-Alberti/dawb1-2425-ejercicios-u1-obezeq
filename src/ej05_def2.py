@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-def calculador(importe: float, iva: float):
+def calcula_precio(importe: float, iva: float):
     if importe >= 0:
 
         if iva >= 0 and iva <= 100:
@@ -12,6 +12,6 @@ def calculador(importe: float, iva: float):
 
         total = round((importe * iva), 2)
         total = f"{total:.2f}"
-        print(f"El precio final del artículo con IVA ({porcentaje}) es {total}€.")
+        return f"El precio final del artículo con IVA ({porcentaje}) es {total}€."
     else:
-        print(f"El importe debe ser mayor o igual a 0")
+        return "El importe debe ser mayor o igual a 0"

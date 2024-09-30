@@ -1,28 +1,12 @@
 #!/usr/bin/env python3
 
-import pytest
-from src.ej05_def import calculador
-
-def test_iva_general(capfd):
-    calculador(1, 1.21)
-    output = capfd.readouterr()
-    assert output.out.strip() == "El precio final del articulo es: 1.21"
+from src.ej05_def2 import calcula_precio
+ 
+def test_iva_general():
+    assert calcula_precio(100, 21) == "El precio final del artículo con IVA (21.00) es 121.00€."
     
-def test_iva_reducido(capfd):
-    calculador(1, 1.1)
-    output = capfd.readouterr()
-    assert output.out.strip() == "El precio final del articulo es: 1.1"
+def test_iva_mayor_cien():
+    assert calcula_precio(100, 200) == "El precio final del artículo con IVA (200.00) es 300.00€."
     
-def test_iva_superreducido(capfd):
-    calculador(1, 1.04)
-    output = capfd.readouterr()
-    assert output.out.strip() == "El precio final del articulo es: 1.04"
-    
-def test_iva_superreducido(capfd):
-    calculador(1, 1)
-    output = capfd.readouterr()
-    assert output.out.strip() == "El precio final del articulo es: 1"
-def test_importe_negativo(capfd):
-    calculador(-1, 1)
-    output = capfd.readouterr()
-    assert output.out.strip() == "El importe debe ser mayor o igual a 0"
+def test_importe_negativo():
+    assert calcula_precio(-1, 10) == "El importe debe ser mayor o igual a 0"

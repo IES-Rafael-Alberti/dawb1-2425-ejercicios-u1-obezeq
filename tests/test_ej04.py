@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
-from unittest.mock import patch
-from src.ej04_def import conversion
+from src.ej04_def2 import grados_celsius
 
-def test_conversion():
-    with patch('builtins.input', return_value="33.8"):
-        assert conversion() == 1.0
-        
-    with patch('builtins.input', return_value="-33.8"):
-        assert conversion() == -1.0
+def test_conversion_positiva():
+    assert grados_celsius(33.8) == 1.0
+    
+def test_conversion_negativa():
+    assert grados_celsius(-33.8) == -1.0
