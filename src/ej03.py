@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-ancho  = 17
+ancho = 17
 alto = 12.0
 
 # print(ancho /  2)

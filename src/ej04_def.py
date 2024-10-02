@@ -7,3 +7,9 @@ def conversion():
     celsius = round(celsius, 2)
     
     return celsius
+
+def main():
+    conversion()
+
+if __name__ == '__main__':
+    main()

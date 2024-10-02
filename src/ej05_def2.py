@@ -17,3 +17,9 @@ def calcula_precio(importe: float, iva: float):
     # Mostrar error en caso que el importe sea menor a 0
     else:
         return "El importe debe ser mayor o igual a 0"
+    
+def main():
+    calcula_precio(10, 21)
+
+if __name__ == '__main__':
+    main()
