@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 def titular(frase):
     frase = frase.split(' ')
     parsed_frase = []
@@ -19,7 +21,6 @@ def titular(frase):
     frase = frase[:-1]
 
     print(frase)
-        
     
 def main():
     titular("   hola mundo desde python   ")
