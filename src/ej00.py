@@ -8,7 +8,7 @@ import subprocess
 
 # CLASE DE COLORES
 class Colors:
-    """Codigos de color ANSI"""
+    """Códigos de color ANSI"""
     WHITE = "\033[1;37m"
     GREEN = "\033[1;32m"
     RED = "\033[0;31m"
@@ -119,11 +119,10 @@ def titulo_programa(num, funciones_programa):
     num = str(num)
     funcion = funciones_programa[num]
     try:
-        os.system(f'title ej{num}: {funcion}') if os.name == 'nt' else os.system(f'echo -ne "\033]0;ej{num}: {funcion}\007"') 
+        os.system(f'title ej{num}: {funcion}') if os.name == 'nt' else os.system(f'echo -ne "\033]0;ej{num}: {funcion}\007"')
         return True
     except:
-        print(f"ERROR: NO SE PUEDE PONER TITULO ej{num}.py")
-        return SystemError
+        raise SystemError(f"No se puede poner titulo ej{num}.py")
 
 # FUNCION PREGUNTA SI DESEA EJECUTAR PROGRAMA DE NUEVO O NO
 def validar_opcion_ejecutar(opcion):
@@ -181,7 +180,7 @@ def ejecutar_programa(program_dirname):
                 return RuntimeError(f"ERROR mientras se ejecutaba el programa:\n{e}\n\nCon el siguiente estado de salida:\n{e.returncode}\n")
 
 def main():
-
+    
     # BUCLE DEL PROGRAMA
     while True:
         welcome_status = welcome()
@@ -216,7 +215,8 @@ def main():
             ejecucion_titulo = titulo_programa(numero_programa, funciones_programa)
 
             # ✗ ERROR AL LIMPIAR TITULO
-            if ejecucion_titulo == SystemError:
+            if isinstance(ejecucion_titulo, SystemError):
+                print(f"{Colors.END}{Colors.RED}[-] ERROR: {ejecucion_titulo}{Colors.END}")
                 os._exit(0) # SALIR DEL PROGRAMA PORQUE HA HABIDO UN ERROR AL CAMBIAR EL TITULO
 
             # ✓ TITULO LIMPIADO CORRECTAMENTEE
