@@ -1,9 +1,62 @@
 #!/usr/bin/env python3
 
+# Dependencies
 import os
 import time
+import sys
 import subprocess
 
+# CLASE DE COLORES
+class Colors:
+    """Codigos de color ANSI"""
+    WHITE = "\033[1;37m"
+    GREEN = "\033[1;32m"
+    RED = "\033[0;31m"
+    UNDERLINE = "\033[4m"
+    ITALIC  = "\033[3m"
+    END = "\033[0m"
+    NEGATIVE = "\033[7m"
+
+# FUNCION PARA EFECTO TYPING
+def efecto_type(texto, delay=0.069):
+    try:
+        for c in texto:
+            sys.stdout.write(c)
+            sys.stdout.flush()
+            time.sleep(delay)
+    except TypeError:
+        return TypeError("En la función 'efecto_type' no se ha proporcionado una entrada tipo 'string'")
+
+# FUNCION PARA LIMPIAR LA CONSOLA
+def limpiar_consola():
+    try:
+        os.system('cls') if os.name == 'nt' else os.system('clear')
+        return True
+    except:
+        return SystemError
+
+# EJECUTAR LIMPIAR_CONSOLA
+def ejecutar_limpiar_consola():
+    try:
+        limpiar_consola()
+    except SystemError:
+        print(f"{Colors.END}{Colors.RED}[-] ERROR AL LIMPIAR LA CONSOLA{Colors.END}")
+        os._exit(0) # ABORTAR EL PROGRAMA DEBIDO AL ERROR
+
+# PANTALLA WELCOME
+def welcome():
+    try:
+        with open("banner.txt", 'r') as f:
+            ejecutar_limpiar_consola()
+            banner = f.read()
+            print(f"{Colors.END}{Colors.GREEN}{banner}{Colors.WHITE}")
+            f.close()
+            os.system('title MENU EJ01-EJ30') if os.name == 'nt' else os.system('echo -ne "\033]0;MENU EJ01-EJ30\007"')
+        return True
+    except FileNotFoundError:
+        return FileNotFoundError(f"{Colors.RED}[-] ERROR: Necesitas el archivo 'banner.txt'{Colors.WHITE}")
+
+# ARRAY DE FUNCIONES DE CADA PROGRAMA
 funciones_programa = {
     "01": "Saludo",
     "02": "Calculadora coste por hora de trabajo",
@@ -38,35 +91,32 @@ funciones_programa = {
 }
 
 # FUNCION PARA VALIDAD LA ENTRADA PARA EL EJERCICIO CORRECTO
-def validacion_entrada(num):
+def validacion_entrada(num: str):
     # La entrada se da en un formato STRING por le usuario, al ser introducida desde un INPUT
     num = num.replace(' ', '')
-
-    if num == '':
-        return -1 # RETORNA -1 PARA LUEGO SALIR DEL PROGRAMA con os._exit(0)
-    elif int(num) < 1 or int(num) > 30:
-        return None # > ERROR: Solo existen programas del 1 al 30
+    
+    # COMPROBAR SI SE HA INTRODUCIDO UN NÚMERO
+    if num.isdigit():
+        if int(num) < 1 or int(num) > 30:
+            return None # NO SE HA INTRODUCIDO UN PROGRAMA VALIDO
+        else:
+            if int(num) > 0 and int(num) < 10:
+                numero_programa = f"0{int(num)}"
+            else:
+                numero_programa = num
+                
+            return numero_programa
+        
+    # NO SE HA INTRODUCIDO UN NÚMERO
     else:
-        return int(num) # RETORNA EL NUMERO DEL PROGRAMA AL SER CORRECTO Y VÁLIDO
-
-# FUNCION PARA LIMPIAR LA CONSOLA
-def limpiar_consola():
-    try:
-        os.system('cls') if os.name == 'nt' else os.system('clear')
-        return True
-    except:
-        return SystemError
-
-# EJECUTAR LIMPIAR_CONSOLA
-def ejecutar_limpiar_consola():
-    try:
-        limpiar_consola()
-    except SystemError:
-        print("[-] ERROR AL LIMPIAR LA CONSOLA")
-        os._exit(0) # ABORTAR EL PROGRAMA DEBIDO AL ERROR
+        if num == '':
+            return -2 # SALIR DEL PROGRAMA
+        else:
+            return -1 # NO SE HA INTRODUCIDO UN NÚMERO
 
 # FUNCION TITULO PROGRAMA
 def titulo_programa(num, funciones_programa):
+    num = str(num)
     funcion = funciones_programa[num]
     try:
         os.system(f'title ej{num}: {funcion}') if os.name == 'nt' else os.system(f'echo -ne "\033]0;ej{num}: {funcion}\007"') 
@@ -78,149 +128,143 @@ def titulo_programa(num, funciones_programa):
 # FUNCION PREGUNTA SI DESEA EJECUTAR PROGRAMA DE NUEVO O NO
 def validar_opcion_ejecutar(opcion):
     opcion = opcion.lower().replace(' ', '')
-    if opcion == "y" or opcion == "yes" or opcion == "s" or opcion == "si":
-        return True
+    if opcion == "y" or opcion == "yes" or opcion == "s" or opcion == "si" or opcion == "claro" or opcion == "yeah" or opcion == "sip" or opcion == "yep":
+        return 1 # EL USUARIO QUIERE EJECUTAR EL PROGRAMA
     elif opcion == "n" or opcion == "no":
-        return False
+        return -1 # EL USUARIO NO QUIERE EJECUTAR EL PROGRAMA
     else:
-        return -1
+        return 0 # NO HA INTRODUCIDO UNA OPCIÓN VÁLIDA
 
 # FUNCION PARA CONVERTIR NUMERO DE PROGRAMA A NOMBRE PROGRAMA
-def convertir_numero_programa(num):
+def convertir_numero_programa(num, base_path):
     try:
-        num = int(num)
-        if num >= 1 and num < 10:
-            nombre_programa = f"ej0{num}.py"
-        else:
-            nombre_programa = f"ej{num}.py"
+        nombre_programa = f"ej{num}.py"
 
         # OBTENER EL DIRECTORIO ACTUAL Y DEL ARCHIVO A EJECUTAR
-        dirname_path = os.path.dirname(__file__)
+        if base_path is None:
+            dirname_path = os.path.dirname(__file__)
+        else:
+            dirname_path = base_path
 
         # COMPROBAR QUE EL ARCHIVO EXISTE
-        os.path.isfile(dirname_path)
-
-        return f'{dirname_path}\\{nombre_programa}' if os.name == 'nt' else f'{dirname_path}/{nombre_programa}
-    except:
-        return FileNotFoundError
-
+        program_path = os.path.join(dirname_path, nombre_programa)
+        if not os.path.isfile(program_path):
+            return FileNotFoundError(f"El archivo '{nombre_programa}' no se encuentra en el directorio '{dirname_path}'.")
+        else:
+            return program_path
+    
+    except Exception as e:
+        return Exception(f"Se ha producido un ERROR desconocido:\n{e}")
 
 # FUNCION EJECUTAR PROGRAMA
 def ejecutar_programa(program_dirname):
-    try:
-        subprocess.run(['python3', {program_dirname}])
-        return True
-    except:
-        try:
-            subprocess.run(['python', {program_dirname}])
-            return True
-        except:
+    comandos = [
+        ['python', program_dirname],
+        ['python3', program_dirname],
+        ['py', program_dirname]
+    ]
+    
+    if not os.path.isfile(program_dirname):
+        return FileNotFoundError("No se ha encontrado el directorio del programa\n")
+    else:
+        for comando in comandos:
             try:
-                subprocess.run(['py', {program_dirname}])
-                return True
-            except:
-                print("ERROR: NO SE HA PODIDO EJECUTAR EL PROGRAMA")
-                return RuntimeError
-
-
-def hola():
-    print("hola")
-
-def ejecucion_programa():
-    """
-    try:
-        while True:
-            if num == '':
-                os._exit(0)
-
-            # ERROR POR NO EJECUTAR UN PROGRAMA CORRECTO
-            elif int(num) < 1 or int(num) > 30:
-                print("> ERROR: Solo existen programas del 1 al 30")
-
-            # PROGRAMA CORRECTO INTRODUCIDO
-            else:
-                num = int(num)
-                if num >= 1 and num < 10:
-                    num = f"0{num}"
-                else:
-                    num = str(num)            
-
-                funcion = funciones_programa[num]
-                os.system(f'title ej{num}: {funcion}')
-
-                opcion = input("Deseas ejecutar el programa (Y/n): ").lower().replace(' ', '')
-                if opcion == "y" or opcion == "yes" or opcion == "s" or opcion == "si":
-                    print(f"Ejecutando programa ej{num}.py ...\n")
-                    time.sleep(1)
-                    dirname_path = os.path.dirname(__file__)
-                    if os.name == 'nt':
-                        program_dirname = f'{dirname_path}\\ej{num}.py'
-                    else:
-                        program_dirname = f'{dirname_path}/ej{num}.py'
-                    
-                    os.system(f"python {program_dirname}")
-                    input("\n> Presiona ENTER para continuar...")
-                    limpiar_consola()
-                    
-                else:
-                    limpiar_consola()
-
-    except ValueError:
-        print("ERROR: No has introducido un número!")
-    """
+                subprocess.run(comando, check=True)
+                return True # EL PROGRAMA FUE EJECUTADO SATISFACTORIAMENTE
+            
+            except FileNotFoundError:
+                # SI EL COMANDO NO ES ENCONTRADO, PASA AL SIGUIENTE COMANDO
+                continue
+            
+            except subprocess.CalledProcessError as e:
+                # ERROR MIENTRAS SE EJECUTABA EL PROGRAMA
+                return RuntimeError(f"ERROR mientras se ejecutaba el programa:\n{e}\n\nCon el siguiente estado de salida:\n{e.returncode}\n")
 
 def main():
 
     # BUCLE DEL PROGRAMA
     while True:
-        program_choice = input("[+] Introduce el número del programa que desees ejecutar: ")
+        welcome_status = welcome()
+        if isinstance(welcome_status, FileNotFoundError):
+            print(welcome_status)
+            os._exit(0)
+        elif welcome_status:
+            program_choice = input(f"{Colors.GREEN}[+]{Colors.WHITE} {Colors.UNDERLINE}Introduce el número del programa que desees ejecutar:{Colors.END} {Colors.ITALIC}")
 
         # VALIDAR QUE SE HA INTRODUCIDO UN NÚMERO DE PROGRAMA CORRECTO
-        validacion_numero = validacion_entrada()
-        if validacion_entrada == -1:
-            os._exit(0) # SALIR DEL PROGRAMA
+        validacion_numero = validacion_entrada(program_choice)
         
-        # LIMPIAR CONSOLA Y MOSTRAR ERROR QUE SOLO EXISTEN PROGRAMAS DEL 1 AL 30 Y LIMPIAR LA CONSOLA
-        elif None:
+        if validacion_numero == -2:
+            status_efecto_typeo = efecto_type(f"\n{Colors.END}{Colors.GREEN}{Colors.NEGATIVE}¡Hasta la próxima!{Colors.END}\n\n")
+            if isinstance(status_efecto_typeo, TypeError):
+                print(f"{Colors.END}{Colors.RED}[-] ERROR: {status_efecto_typeo}{Colors.UNDERLINE}{Colors.END}")
+            os._exit(0)
+        
+        # ✗ NO SE HA INTRODUCIDO UN NÚMERO DE PROGRAMA CORRECTO
+        elif validacion_numero == -1:
             ejecutar_limpiar_consola()
-            
-            print("[-] ERROR: Solo existen programas del 1 al 30\n")
+            print(f"{Colors.END}{Colors.RED}[-] ERROR: {Colors.UNDERLINE}No has introducido un número de programa correcto{Colors.END}\n")
+        
+        # ✗ LIMPIAR CONSOLA Y MOSTRAR ERROR QUE SOLO EXISTEN PROGRAMAS DEL 1 AL 30 Y LIMPIAR LA CONSOLA
+        elif validacion_numero == None:
+            ejecutar_limpiar_consola()
+            print(f"{Colors.END}{Colors.RED}[-] ERROR: {Colors.UNDERLINE}Solo existen programas del 1 al 30{Colors.END}\n")
 
-        # ENTRADA VALIDA
+        # ✓ ENTRADA VALIDA
         else:
             numero_programa = validacion_numero
             ejecucion_titulo = titulo_programa(numero_programa, funciones_programa)
 
-            # ERROR AL LIMPIAR TITULO
+            # ✗ ERROR AL LIMPIAR TITULO
             if ejecucion_titulo == SystemError:
                 os._exit(0) # SALIR DEL PROGRAMA PORQUE HA HABIDO UN ERROR AL CAMBIAR EL TITULO
 
-            # TITULO LIMPIADO CORRECTAMENTEE
+            # ✓ TITULO LIMPIADO CORRECTAMENTEE
             else:
-                opcion_ejecutar = input(f"¿Desea ejecutar el programa ej{numero_programa}.py?")
+                opcion_ejecutar = input(f"{Colors.END}{Colors.GREEN}[+] {Colors.WHITE}{Colors.UNDERLINE}¿Desea ejecutar el programa ej{numero_programa}.py?:{Colors.END}{Colors.WHITE}{Colors.ITALIC} ")
                 validacion_opcion_ejecutar = validar_opcion_ejecutar(opcion_ejecutar)
 
                 # EJECUTAR PROGRAMA
-                if validacion_opcion_ejecutar:
-                    programa_dirname = convertir_numero_programa(numero_programa)
-
-                    # ERROR ARCHIVO NO ENCONTRADO
-                    if programa_dirname == FileNotFoundError:
-                        print("[-] ERROR: No se ha podido encontrar el archivo")
+                if validacion_opcion_ejecutar == 1:
+                    programa_dirname = convertir_numero_programa(numero_programa, None)
+                        
+                    # ✗ ERROR ARCHIVO NO ENCONTRADO
+                    if isinstance(programa_dirname, FileNotFoundError):
+                        print(f"{Colors.END}{Colors.RED}[-] ERROR 'FileNotFoundError':\n{programa_dirname}{Colors.END}")
+                        os._exit(0)
+                        
+                    # ✗ ERROR DESCONOCIDO
+                    elif isinstance(programa_dirname, Exception):
+                        print(f"{Colors.END}{Colors.RED}[-] ERROR: {programa_dirname}{Colors.END}")
                         os._exit(0)
 
-                    # ARCHIVO ENCONTRADO => PROCEDER A EJECUTAR EL PROGRAMMA
+                    # ✓ ARCHIVO ENCONTRADO => PROCEDER A EJECUTAR EL PROGRAMMA
                     else:
-                        print()
+                        print(f"\n{Colors.END}─────────────────────────────────\n")
+                        status_ejecucion = ejecutar_programa(programa_dirname)
+                        
+                        # PROGRAMA EJECUTADO SATISFACTORIAMENTE
+                        if status_ejecucion != True:
+                            if isinstance(status_ejecucion, RuntimeError):
+                                print(f"{Colors.END}{Colors.RED}[-] ERROR: {status_ejecucion}{Colors.END}")
+                            elif isinstance(status_ejecucion, FileNotFoundError):
+                                print(f"{Colors.END}{Colors.RED}[-] ERROR: {status_ejecucion}{Colors.END}")
+                        
+                        # CONTINUAR
+                        print("\n─────────────────────────────────\n")
+                        input(f"{Colors.GREEN}[+] {Colors.NEGATIVE}ej{numero_programa}.py{Colors.END} {Colors.WHITE}ha sido ejecutado satisfactoriamente. {Colors.ITALIC}Presiona ENTER para continuar...{Colors.END}")
+                        
+                        # LIMPIAR CONSOLA
+                        ejecutar_limpiar_consola()
 
-                # EL USUARIO NO HA INTRODUCIDO UNA OPCIÓN VÁLIDA
-                elif validacion_opcion_ejecutar == False:
+                # ✗ EL USUARIO NO QUIERE EJECUTAR EL PROGRAMA
+                elif validacion_opcion_ejecutar == -1:
                     ejecutar_limpiar_consola()
                 
-                # EL USUARIO NO HA INTRODUCIDO UNA OPCIÓN
-                elif validacion_opcion_ejecutar == -1:
-                    print("[-] ERROR: NO HAS INTRODUCIDO UNA OPCIÓN VÁLIDA. Saliendo del programa...")
-                    os._exit(0)
+                # ✗ EL USUARIO NO HA INTRODUCIDO UNA OPCIÓN
+                elif validacion_opcion_ejecutar == 0:
+                    print(f"\n{Colors.END}{Colors.RED}[-] ERROR: NO TE HE ENTENDIDO. (La próxima vez diga si quiere ejecutar o no){Colors.WHITE}\n")
+                    input("Presiona ENTER para reiniciar")
 
 if __name__ == '__main__':
     main()

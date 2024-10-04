@@ -53,7 +53,7 @@ if __name__ == "__main__":
     # DIVIDIR ENTRE EUROS Y CENTIMOS EN EL PRECIOO
     try:
         euros = precio.split(".")[0]
-        euros_total  = precio_total.split(".")[0]
+        euros_total  = str(int(precio_total.split(".")[0]) * 3)
         centimos = precio.split(".")[1]
         centimos_total = precio_total.split(".")[1]
     except Exception as e:
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     # CONVERSION DE EUROS
     euros = conversion_euros(euros, 6)
-    euros_total = conversion_euros(euros, 8)
+    euros_total = conversion_euros(euros_total, 8)
 
     # CONVERSION DE CENTIMOS        
     centimos = conversion_centimos(centimos)
@@ -72,4 +72,4 @@ if __name__ == "__main__":
 
     print("\n───────────────────────")
     print(f"El precio unitario del {producto} es: {precio}€ euros.")
-    print(f"El precio total de {unidades} del {producto} es: {precio_total}€ euros.")
+    print(f"El precio total de {unidades} unidades del {producto} es: {precio_total}€ euros.")
