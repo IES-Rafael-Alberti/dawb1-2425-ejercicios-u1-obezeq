@@ -211,7 +211,6 @@ def update_data(new_options):
         print(f"{Colors.RED}[-] {Colors.BOLD}{Colors.UNDERLINE}ERROR FOUND while Updating Data, please update this error at fantasma.com/bugs:{Colors.END} \n{Colors.YELLOW}{e}{Colors.WHITE}")
         os._exit(0)
 
-
 # CALC THE VARIATION FROM USER INPUT TO GHOST POSITION
 def calc_variation(bid: int, ghost: int, mode: list) -> tuple[int, any]:
     """CALC THE VARIATION FROM USER INPUT TO GHOST POSITION"""
@@ -431,7 +430,6 @@ def menu(fantasma_data):
         # REFRESH TERMINAL IF USER DOESN'T INTRODUCE ANY OPTION GIVEN AND ASK AGAIN
         else:
             refresh() 
-
 
 # MAIN FUNCTION
 def main():
