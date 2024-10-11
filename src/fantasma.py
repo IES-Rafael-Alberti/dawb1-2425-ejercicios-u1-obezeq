@@ -6,11 +6,15 @@
 # │ github.com/obezeq    │
 # └──────────────────────┘
 
+# ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+
 # DEPENDENCIES
 import random
 import json
 import time
 import os
+
+# ──────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 # GLOBAL VARIABLES
 global data_file
@@ -83,6 +87,8 @@ def welcome():
     # If the banner file of the game is not found, it will return an error.
     except FileNotFoundError:
         return FileNotFoundError(f"{Colors.RED}[-] ERROR: Necesitas el archivo 'banner_fantasma.txt'{Colors.WHITE}")
+
+# ──────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 # SAVES THE UPDATED PLAYER DATA BACK TO THE JSON FILE
 def save_player_data(data):
@@ -211,6 +217,8 @@ def update_data(new_options):
         print(f"{Colors.RED}[-] {Colors.BOLD}{Colors.UNDERLINE}ERROR FOUND while Updating Data, please update this error at fantasma.com/bugs:{Colors.END} \n{Colors.YELLOW}{e}{Colors.WHITE}")
         os._exit(0)
 
+# ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+
 # CALC THE VARIATION FROM USER INPUT TO GHOST POSITION
 def calc_variation(bid: int, ghost: int, mode: list) -> tuple[int, any]:
     """CALC THE VARIATION FROM USER INPUT TO GHOST POSITION"""
@@ -314,6 +322,7 @@ def game(fantasma_data):
             else:
                 print(f"{Colors.END}{Colors.RED}:O{Colors.WHITE} No has introducido un {Colors.RED}{Colors.CROSSED}número{Colors.END}{Colors.WHITE}, {Colors.BOLD}inténtalo de nuevo.{Colors.END}{Colors.WHITE}")
 
+# ──────────────────────────────────────────────────────────────────────────────────────────────────────────
 # MENU - Mode
 def menu_mode(fantasma_data):
     """MENU - Mode"""
@@ -430,6 +439,7 @@ def menu(fantasma_data):
         # REFRESH TERMINAL IF USER DOESN'T INTRODUCE ANY OPTION GIVEN AND ASK AGAIN
         else:
             refresh() 
+# ──────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 # MAIN FUNCTION
 def main():
