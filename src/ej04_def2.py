@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-def grados_celsius(fahrenheit: float):
+def grados_celsius(fahrenheit: float) -> float:
     
+    fahrenheit = round(fahrenheit, 2)
     celsius = fahrenheit / 33.8
     celsius = round(celsius, 2)
     
