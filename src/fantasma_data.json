@@ -1,0 +1,16 @@
+{
+ "options": {
+  "mode": [
+   1,
+   1000
+  ]
+ },
+ "player_stats": {
+  "name": "Jos\u00e9 \u00c1ngel",
+  "attempts": 8,
+  "deaths": 1,
+  "wins": 1,
+  "best_score": 6,
+  "last_guess": 6
+ }
+}
